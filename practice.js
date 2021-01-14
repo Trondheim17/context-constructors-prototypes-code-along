@@ -8,9 +8,11 @@
 */
 
 let user = {
-	username: "bencallis",
-	email: "bencallis1@gmail.com",
-    // Code here
+  username: "bencallis",
+  email: "bencallis1@gmail.com",
+  getUserName: function () {
+    return this.username
+  }
 };
 
 
@@ -24,14 +26,16 @@ let user = {
 */
 
 
+
 let user1 = {
-	username: "iliketurtles",
-	age: 13,
-	email: "iliketurtles@gmail.com",
+  username: "iliketurtles",
+  age: 13,
+  email: "iliketurtles@gmail.com",
 };
 
+// Code here
 const getUsername = function () {
-    // Code here
+  return this.username
 };
 
 const username = getUsername.call(user1);
@@ -47,16 +51,16 @@ const username = getUsername.call(user1);
 */
 
 let user2 = {
-	username: "BillyBob",
-	age: 19,
-	email: "billybob21@gmail.com",
+  username: "BillyBob",
+  age: 19,
+  email: "billybob21@gmail.com",
 };
 
 function getOtherUsername() {
-	return this.username;
+  return this.username;
 };
 
-// Code here
+const otherUsername = getOtherUsername.call(user2)
 
 
 
@@ -72,6 +76,9 @@ function getOtherUsername() {
 */
 
 // Code here
+const username1 = getOtherUsername.call(user1)
+
+const username2 = getOtherUsername.call(user2)
 
 
 
@@ -84,16 +91,17 @@ function getOtherUsername() {
 */
 
 const obj = {
-	num: 5,
+  num: 5,
 };
 
 const nums = [1, 2, 3];
 
 function add(a, b, c) {
-	return this.num + a + b + c;
+  return this.num + a + b + c;
 }
 
 // Code here
+const result = add.apply(obj, nums)
 
 
 
@@ -107,16 +115,16 @@ function add(a, b, c) {
 */
 
 const favRapper = {
-    name: "Xzibit",
-    birthYear: 1974,
+  name: "Xzibit",
+  birthYear: 1974,
 };
 
 const getName = function () {
-	return this.name;
+  return this.name;
 };
 
 // Code here
-
+const name = getName.bind(favRapper)
 
 
 ////////// PROBLEM 7 //////////
@@ -128,8 +136,11 @@ const getName = function () {
   Make sure the property names match the parameter names
 */
 
-function Car (color, make, year){
-    // Code here
+function Car(color, make, year) {
+  // Code here
+  this.color = color
+  this.make = make
+  this.year = year
 }
 
 
@@ -143,13 +154,16 @@ function Car (color, make, year){
   You must use the this keyword
 */
 
-function CarMaker (make, model, year) {
-	this.make = make;
-	this.model = model;
-	this.year = year;
-    this.move = 0;
-    
-    // Code here
+function CarMaker(make, model, year) {
+  this.make = make;
+  this.model = model;
+  this.year = year;
+  this.move = 0;
+
+  // Code here
+  this.moveCar = function () {
+    this.move += 10
+  }
 };
 
 
@@ -166,6 +180,18 @@ function CarMaker (make, model, year) {
 */
 
 // Code here
+function Player(name, age, team, pointsScored) {
+  this.name = name
+  this.age = age
+  this.team = team
+  this.pointsScored = pointsScored
+
+  this.addPoints = function (number) {
+    return this.pointsScored += number
+
+  }
+
+}
 
 
 
@@ -179,18 +205,17 @@ function CarMaker (make, model, year) {
 */
 
 function Restaurant(name, type, stars) {
-    this.name = name;
-	this.type = type;
-    this.stars = stars;
-    
-    this.addStars = function (num) {
-        this.stars += num;
-        return this.stars;
-    };
+  this.name = name;
+  this.type = type;
+  this.stars = stars;
+
 }
 
-// Code here
 
+// Code here
+Restaurant.prototype.addStars = function (num) {
+  return this.stars += num
+}
 
 
 ////////// PROBLEM 11 //////////
@@ -207,15 +232,22 @@ function Restaurant(name, type, stars) {
 */
 
 function Person(name, age, hometown, email, friends) {
-	this.name = name;
-	this.age = age;
-	this.hometown = hometown;
-	this.email = email;
-	this.friends = friends;
+  this.name = name;
+  this.age = age;
+  this.hometown = hometown;
+  this.email = email;
+  this.friends = friends;
 }
 
 // Code here
+Person.prototype.addFriend = function (newFriend) {
+  this.friends.push(newFriend)
+}
 
+Person.prototype.removeFriend = function (badFriend) {
+  let index = this.friends.findIndex(element => element === badFriend)
+  this.friends.splice(index,1)
+}
 
 
 ////////// PROBLEM 12 //////////
@@ -225,7 +257,7 @@ function Person(name, age, hometown, email, friends) {
   This function should take in 4 parameters: name, age, email, and savedPosts
   Name and email will be strings, age will be a number and savedPosts will be an array of objects
   These objects will each have 3 properties: id (a number), title (a string), and rating (a number between 1 and 5)
-  These objects are the posts that the user will have saved to their account 
+  These objects are the posts that the user will have saved to their account
 
   Once the User constructor function is created, write a prototype method for the User function
   Name this method addSavedPost
@@ -236,7 +268,17 @@ function Person(name, age, hometown, email, friends) {
 
 // Code here
 
+function User (name, age, email, savedPosts) {
+  this.name = name
+  this.age = age
+  this.email = email
+  this.savedPosts = savedPosts
+}
 
+User.prototype.addSavedPost = function (id, title, rating) {
+  let newPost = {id, title, rating,}
+  this.savedPosts.push(newPost)
+}
 
 ////////// PROBLEM 13 //////////
 
@@ -248,6 +290,10 @@ function Person(name, age, hometown, email, friends) {
 */
 
 // Code here
+User.prototype.removeSavedPost = function (postId) {
+    let index = this.savedPosts.findIndex(elem => elem.id === postId)
+    this.savedPosts.splice(index, 1)
+    }
 
 
 
@@ -261,3 +307,8 @@ function Person(name, age, hometown, email, friends) {
 */
 
 // Code here
+User.prototype.changePostRating = function (id, newRating) {
+  let index = this.savedPosts.findIndex(elem => elem.id === id)
+  this.savedPosts[index].rating = newRating
+
+}
